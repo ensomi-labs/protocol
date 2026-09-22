@@ -3,11 +3,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "PulsefieldProtocol",
+    name: "EnsomiProtocol",
     products: [
         .library(
-            name: "PulsefieldProtocol",
-            targets: ["PulsefieldProtocol"]
+            name: "EnsomiProtocol",
+            targets: ["EnsomiProtocol"]
         )
     ],
     dependencies: [
@@ -18,16 +18,16 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "PulsefieldProtocol",
+            name: "EnsomiProtocol",
             dependencies: [
                 .product(name: "SwiftProtobuf", package: "swift-protobuf")
             ],
             path: "gen/swift",
             sources: [
-                "pulsefield/protocol/v1/core.pb.swift",
-                "pulsefield/protocol/v1/envelope.pb.swift",
-                "pulsefield/protocol/v1/inference.pb.swift",
-                "pulsefield/protocol/v1/mapper.pb.swift",
+                "ensomi/protocol/v1/core.pb.swift",
+                "ensomi/protocol/v1/envelope.pb.swift",
+                "ensomi/protocol/v1/inference.pb.swift",
+                "ensomi/protocol/v1/mapper.pb.swift",
             ]
         )
     ]

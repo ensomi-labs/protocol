@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package pulsefield.protocol.v1;
+package ensomi.protocol.v1;
 
 // Sent by a client to ask the endpoint to load models and become ready.
 message ReadyRequest {}

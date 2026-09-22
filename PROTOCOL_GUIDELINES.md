@@ -2,7 +2,7 @@
 
 ## Intent
 
-This package defines the shared protobuf contract for Pulsefield clients and model services. The goal is to keep the protocol easy to evolve while avoiding accidental wire-format breakage.
+This package defines the shared protobuf contract for Ensomi clients and model services. The goal is to keep the protocol easy to evolve while avoiding accidental wire-format breakage.
 
 ## Change Policy
 
@@ -38,8 +38,8 @@ This package should contain stable, cross-process protocol contracts:
 
 Keep implementation details in their owning repositories:
 
-- Model training, Torch runtime, checkpoint loading, mel/control features, grammar decoding, and timing fitting algorithms stay in `Pulsefield-model`.
-- Token decoding, decoded Mania4K/domain state, SwiftUI view state, AVFoundation clocks, input routing, rendering, judgement, scoring, and local-library/recognition integrations stay in `Pulsefield`.
+- Model training, Torch runtime, checkpoint loading, mel/control features, grammar decoding, and timing fitting algorithms stay in `Ensomi-model`.
+- Token decoding, decoded Mania4K/domain state, SwiftUI view state, AVFoundation clocks, input routing, rendering, judgement, scoring, and local-library/recognition integrations stay in `Ensomi`.
 - Full `.osu` import/export behavior stays outside this protocol.
 
 ## Inference Lifecycle

@@ -1,10 +1,10 @@
 {
-  "name": "@pulsefield/protocol",
+  "name": "@ensomi/protocol",
   "version": "0.0.3",
-  "description": "Shared Protocol Buffers contracts for Pulsefield clients and model services.",
+  "description": "Shared Protocol Buffers contracts for Ensomi clients and model services.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Pulsefield/protocol.git"
+    "url": "git+https://github.com/ensomi-labs/protocol.git"
   },
   "type": "module",
   "license": "Apache-2.0",
@@ -40,7 +40,7 @@
     "format:write": "prettier --write ."
   },
   "keywords": [
-    "pulsefield",
+    "ensomi",
     "protobuf",
     "protocol"
   ],
@@ -60,6 +60,7 @@
   ],
   "devDependencies": {
     "@bufbuild/buf": "1.70.0",
+    "@changesets/cli": "^3.0.3",
     "prettier": "3.8.4"
   }
 }

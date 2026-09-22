@@ -144,7 +144,7 @@ function checkGeneratedSurface() {
     );
 
     for (const enumName of protoSurface.enums) {
-      const swiftEnum = `enum Pulsefield_Protocol_V1_${enumName}`;
+      const swiftEnum = `enum Ensomi_Protocol_V1_${enumName}`;
       if (!swiftSource.includes(swiftEnum)) {
         fail(`Swift output missing enum ${enumName}`);
       }
@@ -154,7 +154,7 @@ function checkGeneratedSurface() {
     }
 
     for (const message of protoSurface.messages) {
-      const swiftStruct = `struct Pulsefield_Protocol_V1_${message.name}`;
+      const swiftStruct = `struct Ensomi_Protocol_V1_${message.name}`;
       if (!swiftSource.includes(swiftStruct)) {
         fail(`Swift output missing message ${message.name}`);
       }
@@ -175,15 +175,13 @@ function checkGeneratedSurface() {
 }
 
 function checkPythonTypedMarker() {
-  const markerPath = path.join(root, "gen/python/pulsefield/protocol/py.typed");
+  const markerPath = path.join(root, "gen/python/ensomi/protocol/py.typed");
   if (!existsSync(markerPath)) {
-    fail(
-      "missing Python typed marker: gen/python/pulsefield/protocol/py.typed",
-    );
+    fail("missing Python typed marker: gen/python/ensomi/protocol/py.typed");
   }
 }
 
-const tempDir = mkdtempSync(path.join(tmpdir(), "pulsefield-protocol-gen-"));
+const tempDir = mkdtempSync(path.join(tmpdir(), "ensomi-protocol-gen-"));
 try {
   execFileSync(bufBin, ["generate", "--output", tempDir], {
     cwd: root,
@@ -198,7 +196,7 @@ try {
     path.join(root, "gen/python"),
     {
       ignore: (relativePath) =>
-        relativePath === "pulsefield/protocol/py.typed" ||
+        relativePath === "ensomi/protocol/py.typed" ||
         relativePath.includes(".egg-info") ||
         relativePath.includes("__pycache__"),
     },

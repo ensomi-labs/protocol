@@ -3,7 +3,7 @@ import path from "node:path";
 
 const markerPath = path.join(
   process.cwd(),
-  "gen/python/pulsefield/protocol/py.typed",
+  "gen/python/ensomi/protocol/py.typed",
 );
 
 await mkdir(path.dirname(markerPath), { recursive: true });

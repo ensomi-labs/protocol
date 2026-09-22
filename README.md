@@ -1,6 +1,6 @@
-# Pulsefield Protocol
+# Ensomi Protocol
 
-Shared protocol package for projects under [github.com/Pulsefield](https://github.com/Pulsefield).
+Shared protocol package for projects under [github.com/ensomi-labs](https://github.com/ensomi-labs).
 
 ## Repository Layout
 
@@ -23,22 +23,22 @@ See [Protocol Guidelines](./PROTOCOL_GUIDELINES.md) for schema evolution, naming
 The v1 protobuf source is split by responsibility:
 
 ```text
-proto/pulsefield/protocol/v1/core.proto
+proto/ensomi/protocol/v1/core.proto
   Node identity, roles, and advertised capabilities.
 
-proto/pulsefield/protocol/v1/envelope.proto
+proto/ensomi/protocol/v1/envelope.proto
   Transport envelope, routing metadata, correlation ids, and payload union.
 
-proto/pulsefield/protocol/v1/inference.proto
+proto/ensomi/protocol/v1/inference.proto
   Inference requests, lifecycle status, errors, and end-of-stream events.
 
-proto/pulsefield/protocol/v1/mapper.proto
+proto/ensomi/protocol/v1/mapper.proto
   Opaque mapper token events.
 ```
 
 ## Current Scope
 
-This package owns the stable cross-language contract between Pulsefield clients, the Python model endpoint, and npm consumers:
+This package owns the stable cross-language contract between Ensomi clients, the Python model endpoint, and npm consumers:
 
 - Node graph identity for host, player client, model service, hardware, and debug-tool processes.
 - Inference WebSocket envelopes: ready, audio, reference time, stop, status, error, hitobject token, and end-of-stream.
@@ -55,7 +55,7 @@ This repository publishes the same protocol contract through multiple language-n
 The npm package remains useful for Node tooling, registry-backed tarballs, and consumers that want direct access to `proto/` and `gen/`:
 
 ```sh
-npm install @pulsefield/protocol
+npm install @ensomi/protocol
 ```
 
 ### SwiftPM
@@ -64,7 +64,7 @@ Swift/Xcode consumers should depend on this Git repository directly:
 
 ```swift
 .package(
-    url: "https://github.com/Pulsefield/protocol.git",
+    url: "https://github.com/ensomi-labs/protocol.git",
     from: "0.0.3"
 )
 ```
@@ -72,7 +72,7 @@ Swift/Xcode consumers should depend on this Git repository directly:
 Then add the product to a target:
 
 ```swift
-.product(name: "PulsefieldProtocol", package: "protocol")
+.product(name: "EnsomiProtocol", package: "protocol")
 ```
 
 SwiftPM publication is Git-tag based. Create and push a semver tag such as `0.0.3`; no central Swift registry is required for this bootstrap path.
@@ -82,7 +82,7 @@ SwiftPM publication is Git-tag based. Create and push a semver tag such as `0.0.
 Python consumers should eventually use the PyPI package:
 
 ```sh
-pip install pulsefield-protocol==0.0.3
+pip install ensomi-protocol==0.0.3
 ```
 
 The local bootstrap build is:
@@ -91,7 +91,7 @@ The local bootstrap build is:
 python3 -m pip install build
 python3 -m build --sdist --wheel --outdir dist/
 python3 -m pip install dist/*.whl
-python3 -c "from pulsefield.protocol.v1 import envelope_pb2; envelope_pb2.Envelope()"
+python3 -c "from ensomi.protocol.v1 import envelope_pb2; envelope_pb2.Envelope()"
 ```
 
 Generated Python classes live in the module for their source `.proto` file. For example, import `Envelope` from `envelope_pb2`, inference messages from `inference_pb2`, mapper token messages from `mapper_pb2`, and node graph messages from `core_pb2`.

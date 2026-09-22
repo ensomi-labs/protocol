@@ -1,6 +1,6 @@
-from pulsefield.protocol.v1 import core_pb2 as _core_pb2
-from pulsefield.protocol.v1 import inference_pb2 as _inference_pb2
-from pulsefield.protocol.v1 import mapper_pb2 as _mapper_pb2
+from ensomi.protocol.v1 import core_pb2 as _core_pb2
+from ensomi.protocol.v1 import inference_pb2 as _inference_pb2
+from ensomi.protocol.v1 import mapper_pb2 as _mapper_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union

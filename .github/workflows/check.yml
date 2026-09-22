@@ -51,7 +51,7 @@ jobs:
       - run: python -m pip install build
       - run: python -m build --sdist --wheel --outdir dist/
       - run: python -m pip install dist/*.whl
-      - run: python -c "from pulsefield.protocol.v1 import envelope_pb2; envelope_pb2.Envelope(session_id='ci')"
+      - run: python -c "from ensomi.protocol.v1 import envelope_pb2; envelope_pb2.Envelope(session_id='ci')"
 
   swift:
     runs-on: macos-15

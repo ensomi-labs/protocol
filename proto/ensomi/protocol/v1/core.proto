@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package pulsefield.protocol.v1;
+package ensomi.protocol.v1;
 
 // Capability advertised by a node before domain-specific traffic begins.
 message NodeCapability {
@@ -16,7 +16,7 @@ message NodeCapability {
 
 // Initial topology announcement for apps, services, tools, and hardware bridges.
 message NodeHello {
-  // Stable node identifier within a Pulsefield graph or room.
+  // Stable node identifier within an Ensomi graph or room.
   string node_id = 1;
 
   NodeRole role = 2;
@@ -26,7 +26,7 @@ message NodeHello {
   // Protocol package version spoken by this node, such as "0.0.3".
   string protocol_version = 4;
 
-  // Stable application or service identifier, such as "pulsefield.host".
+  // Stable application or service identifier, such as "ensomi.host".
   string app_id = 5;
 }
 

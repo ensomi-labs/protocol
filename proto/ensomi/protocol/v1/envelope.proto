@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package pulsefield.protocol.v1;
+package ensomi.protocol.v1;
 
-import "pulsefield/protocol/v1/core.proto";
-import "pulsefield/protocol/v1/inference.proto";
-import "pulsefield/protocol/v1/mapper.proto";
+import "ensomi/protocol/v1/core.proto";
+import "ensomi/protocol/v1/inference.proto";
+import "ensomi/protocol/v1/mapper.proto";
 
-// Transport-agnostic binary envelope shared by Pulsefield nodes.
+// Transport-agnostic binary envelope shared by Ensomi nodes.
 message Envelope {
   // Inference/play session identifier. Empty for node-level or graph-level messages.
   string session_id = 1;

@@ -4,9 +4,9 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 const root = process.cwd();
-const tempDir = mkdtempSync(path.join(tmpdir(), "pulsefield-protocol-python-"));
+const tempDir = mkdtempSync(path.join(tmpdir(), "ensomi-protocol-python-"));
 const rootBuildDir = path.join(root, "build");
-const eggInfoDir = path.join(root, "gen/python/pulsefield_protocol.egg-info");
+const eggInfoDir = path.join(root, "gen/python/ensomi_protocol.egg-info");
 const rootBuildDirExisted = existsSync(rootBuildDir);
 const eggInfoDirExisted = existsSync(eggInfoDir);
 
@@ -48,7 +48,7 @@ try {
   run(installPython, ["-m", "pip", "install", path.join(distDir, wheel)]);
   run(installPython, [
     "-c",
-    "from pulsefield.protocol.v1 import envelope_pb2; envelope_pb2.Envelope(session_id='wheel')",
+    "from ensomi.protocol.v1 import envelope_pb2; envelope_pb2.Envelope(session_id='wheel')",
   ]);
 
   console.log("python wheel builds, installs, and imports");
