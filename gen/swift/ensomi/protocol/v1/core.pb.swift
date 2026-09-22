@@ -200,7 +200,7 @@ public nonisolated struct Ensomi_Protocol_V1_NodeHello: Sendable {
 
   public var capabilities: [Ensomi_Protocol_V1_NodeCapability] = []
 
-  /// Protocol package version spoken by this node, such as "0.0.3".
+  /// Protocol package version spoken by this node, such as "0.1.0".
   public var protocolVersion: String = String()
 
   /// Stable application or service identifier, such as "ensomi.host".

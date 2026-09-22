@@ -1,6 +1,6 @@
 {
   "name": "@ensomi/protocol",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Shared Protocol Buffers contracts for Ensomi clients and model services.",
   "repository": {
     "type": "git",

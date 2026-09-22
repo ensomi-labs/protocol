@@ -65,7 +65,7 @@ Swift/Xcode consumers should depend on this Git repository directly:
 ```swift
 .package(
     url: "https://github.com/ensomi-labs/protocol.git",
-    from: "0.0.3"
+    from: "0.1.0"
 )
 ```
 
@@ -75,14 +75,14 @@ Then add the product to a target:
 .product(name: "EnsomiProtocol", package: "protocol")
 ```
 
-SwiftPM publication is Git-tag based. Create and push a semver tag such as `0.0.3`; no central Swift registry is required for this bootstrap path.
+SwiftPM publication is Git-tag based. Create and push a semver tag such as `0.1.0`; no central Swift registry is required for this bootstrap path.
 
 ### Python
 
 Python consumers should eventually use the PyPI package:
 
 ```sh
-pip install ensomi-protocol==0.0.3
+pip install ensomi-protocol==0.1.0
 ```
 
 The local bootstrap build is:

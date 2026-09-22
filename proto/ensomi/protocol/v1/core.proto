@@ -23,7 +23,7 @@ message NodeHello {
 
   repeated NodeCapability capabilities = 3;
 
-  // Protocol package version spoken by this node, such as "0.0.3".
+  // Protocol package version spoken by this node, such as "0.1.0".
   string protocol_version = 4;
 
   // Stable application or service identifier, such as "ensomi.host".
