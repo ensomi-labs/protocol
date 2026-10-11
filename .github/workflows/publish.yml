@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "24"
-          registry-url: "https://registry.npmjs.org"
+          # publishConfig sets the registry; OIDC does not need a placeholder auth token.
           cache: npm
           cache-dependency-path: package-lock.json
 
@@ -35,4 +35,5 @@ jobs:
       - run: npm run check
       - run: npm run format
       - run: npm pack --dry-run
-      - run: npm publish
+      - name: Publish with npm trusted publishing
+        run: npm publish --loglevel verbose
