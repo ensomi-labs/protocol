@@ -155,6 +155,47 @@ public nonisolated struct Ensomi_Protocol_V1_Envelope: @unchecked Sendable {
     set {_uniqueStorage()._payload = .endOfStream(newValue)}
   }
 
+  /// Complete-chart generation, see chart.proto.
+  public var generateChart: Ensomi_Protocol_V1_GenerateChartRequest {
+    get {
+      if case .generateChart(let v)? = _storage._payload {return v}
+      return Ensomi_Protocol_V1_GenerateChartRequest()
+    }
+    set {_uniqueStorage()._payload = .generateChart(newValue)}
+  }
+
+  public var capabilitiesRequest: Ensomi_Protocol_V1_CapabilitiesRequest {
+    get {
+      if case .capabilitiesRequest(let v)? = _storage._payload {return v}
+      return Ensomi_Protocol_V1_CapabilitiesRequest()
+    }
+    set {_uniqueStorage()._payload = .capabilitiesRequest(newValue)}
+  }
+
+  public var modelCapabilities: Ensomi_Protocol_V1_ModelCapabilities {
+    get {
+      if case .modelCapabilities(let v)? = _storage._payload {return v}
+      return Ensomi_Protocol_V1_ModelCapabilities()
+    }
+    set {_uniqueStorage()._payload = .modelCapabilities(newValue)}
+  }
+
+  public var generationProgress: Ensomi_Protocol_V1_GenerationProgress {
+    get {
+      if case .generationProgress(let v)? = _storage._payload {return v}
+      return Ensomi_Protocol_V1_GenerationProgress()
+    }
+    set {_uniqueStorage()._payload = .generationProgress(newValue)}
+  }
+
+  public var chartResult: Ensomi_Protocol_V1_ChartResult {
+    get {
+      if case .chartResult(let v)? = _storage._payload {return v}
+      return Ensomi_Protocol_V1_ChartResult()
+    }
+    set {_uniqueStorage()._payload = .chartResult(newValue)}
+  }
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public nonisolated enum OneOf_Payload: Equatable, Sendable {
@@ -170,6 +211,12 @@ public nonisolated struct Ensomi_Protocol_V1_Envelope: @unchecked Sendable {
     case error(Ensomi_Protocol_V1_ErrorEvent)
     case status(Ensomi_Protocol_V1_StatusEvent)
     case endOfStream(Ensomi_Protocol_V1_EndOfStreamEvent)
+    /// Complete-chart generation, see chart.proto.
+    case generateChart(Ensomi_Protocol_V1_GenerateChartRequest)
+    case capabilitiesRequest(Ensomi_Protocol_V1_CapabilitiesRequest)
+    case modelCapabilities(Ensomi_Protocol_V1_ModelCapabilities)
+    case generationProgress(Ensomi_Protocol_V1_GenerationProgress)
+    case chartResult(Ensomi_Protocol_V1_ChartResult)
 
   }
 
@@ -184,7 +231,7 @@ fileprivate nonisolated let _protobuf_package = "ensomi.protocol.v1"
 
 nonisolated extension Ensomi_Protocol_V1_Envelope: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Envelope"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}session_id\0\u{1}sequence\0\u{3}sent_at_unix_ms\0\u{3}source_node_id\0\u{3}target_node_id\0\u{3}message_id\0\u{3}correlation_id\0\u{3}node_hello\0\u{2}\u{2}ready\0\u{1}audio\0\u{3}reference_time\0\u{3}stop_session\0\u{4}\u{6}mapper_stream_begin\0\u{3}hit_object_token\0\u{1}error\0\u{1}status\0\u{3}end_of_stream\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}session_id\0\u{1}sequence\0\u{3}sent_at_unix_ms\0\u{3}source_node_id\0\u{3}target_node_id\0\u{3}message_id\0\u{3}correlation_id\0\u{3}node_hello\0\u{2}\u{2}ready\0\u{1}audio\0\u{3}reference_time\0\u{3}stop_session\0\u{4}\u{6}mapper_stream_begin\0\u{3}hit_object_token\0\u{1}error\0\u{1}status\0\u{3}end_of_stream\0\u{3}generate_chart\0\u{3}capabilities_request\0\u{3}model_capabilities\0\u{3}generation_progress\0\u{3}chart_result\0")
 
   fileprivate class _StorageClass {
     var _sessionID: String = String()
@@ -368,6 +415,71 @@ nonisolated extension Ensomi_Protocol_V1_Envelope: SwiftProtobuf.Message, SwiftP
             _storage._payload = .endOfStream(v)
           }
         }()
+        case 24: try {
+          var v: Ensomi_Protocol_V1_GenerateChartRequest?
+          var hadOneofValue = false
+          if let current = _storage._payload {
+            hadOneofValue = true
+            if case .generateChart(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {
+            if hadOneofValue {try decoder.handleConflictingOneOf()}
+            _storage._payload = .generateChart(v)
+          }
+        }()
+        case 25: try {
+          var v: Ensomi_Protocol_V1_CapabilitiesRequest?
+          var hadOneofValue = false
+          if let current = _storage._payload {
+            hadOneofValue = true
+            if case .capabilitiesRequest(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {
+            if hadOneofValue {try decoder.handleConflictingOneOf()}
+            _storage._payload = .capabilitiesRequest(v)
+          }
+        }()
+        case 26: try {
+          var v: Ensomi_Protocol_V1_ModelCapabilities?
+          var hadOneofValue = false
+          if let current = _storage._payload {
+            hadOneofValue = true
+            if case .modelCapabilities(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {
+            if hadOneofValue {try decoder.handleConflictingOneOf()}
+            _storage._payload = .modelCapabilities(v)
+          }
+        }()
+        case 27: try {
+          var v: Ensomi_Protocol_V1_GenerationProgress?
+          var hadOneofValue = false
+          if let current = _storage._payload {
+            hadOneofValue = true
+            if case .generationProgress(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {
+            if hadOneofValue {try decoder.handleConflictingOneOf()}
+            _storage._payload = .generationProgress(v)
+          }
+        }()
+        case 28: try {
+          var v: Ensomi_Protocol_V1_ChartResult?
+          var hadOneofValue = false
+          if let current = _storage._payload {
+            hadOneofValue = true
+            if case .chartResult(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {
+            if hadOneofValue {try decoder.handleConflictingOneOf()}
+            _storage._payload = .chartResult(v)
+          }
+        }()
         default: break
         }
       }
@@ -441,6 +553,26 @@ nonisolated extension Ensomi_Protocol_V1_Envelope: SwiftProtobuf.Message, SwiftP
       case .endOfStream?: try {
         guard case .endOfStream(let v)? = _storage._payload else { preconditionFailure() }
         try visitor.visitSingularMessageField(value: v, fieldNumber: 23)
+      }()
+      case .generateChart?: try {
+        guard case .generateChart(let v)? = _storage._payload else { preconditionFailure() }
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 24)
+      }()
+      case .capabilitiesRequest?: try {
+        guard case .capabilitiesRequest(let v)? = _storage._payload else { preconditionFailure() }
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 25)
+      }()
+      case .modelCapabilities?: try {
+        guard case .modelCapabilities(let v)? = _storage._payload else { preconditionFailure() }
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 26)
+      }()
+      case .generationProgress?: try {
+        guard case .generationProgress(let v)? = _storage._payload else { preconditionFailure() }
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 27)
+      }()
+      case .chartResult?: try {
+        guard case .chartResult(let v)? = _storage._payload else { preconditionFailure() }
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 28)
       }()
       case nil: break
       }

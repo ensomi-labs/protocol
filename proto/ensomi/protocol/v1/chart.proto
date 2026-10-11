@@ -1,0 +1,200 @@
+syntax = "proto3";
+
+package ensomi.protocol.v1;
+
+import "ensomi/protocol/v1/inference.proto";
+
+// Complete-chart generation: one request produces a whole mania 4K chart as plain objects.
+//
+// Session flow, all on binary Envelope frames with the same non-empty Envelope.session_id:
+//   client: GenerateChartRequest
+//   service: GenerationProgress (zero or more, one per phase entered), then ChartResult
+//   or the service answers with ErrorEvent, after which the session is over.
+// The client cancels with StopSessionRequest; the service then sends no ChartResult for that session.
+// CapabilitiesRequest is node-scoped (empty session_id) and answered with ModelCapabilities.
+// The service sets Envelope.correlation_id of every reply to the request's Envelope.message_id.
+//
+// ErrorEvent.code values used by a chart service, with ErrorEvent.error_code in parentheses:
+//   "star_out_of_range" (PROTOCOL_ERROR): star is outside [min_star, max_star_exclusive).
+//   "audio_unreadable" (AUDIO_NOT_FOUND): the audio reference cannot be read by the service.
+//   "unsupported_control" (PROTOCOL_ERROR): a control is malformed or the model rejects it.
+//   "busy" (PROTOCOL_ERROR): another generation is running.
+//   "generation_failed" (INFERENCE_FAILED): internal failure.
+
+// One note. Times are audio time in whole milliseconds with no latency or offset applied.
+message ChartObject {
+  // Column, 0 to 3 from left to right.
+  uint32 lane = 1;
+
+  // Time of the note head.
+  uint32 start_ms = 2;
+
+  // Release time of a hold. Absent for a tap. When present it is greater than start_ms.
+  optional uint32 end_ms = 3;
+}
+
+// A complete chart.
+message Chart {
+  // Song length in milliseconds. Every object time lies within [0, duration_ms].
+  uint32 duration_ms = 1;
+
+  // Sorted by start_ms, then lane. A lane has at most one open hold, and no tap or hold starts inside
+  // another hold of the same lane.
+  repeated ChartObject objects = 2;
+}
+
+// Sent by a client to generate a complete chart for one song. Envelope.session_id MUST be non-empty.
+message GenerateChartRequest {
+  // The song. A service that reads files accepts local_path.
+  AudioAssetRef audio = 1;
+
+  // Requested star rating of the whole chart. The accepted range is in ModelCapabilities.
+  double star = 2;
+
+  // Generation seed. Absent means the service default, 0. The same model, audio, star, controls and seed
+  // give the same chart.
+  optional uint64 seed = 3;
+
+  ChartControls controls = 4;
+
+  // Song title and artist written to the exported chart, when the client knows them.
+  optional string title = 5;
+  optional string artist = 6;
+}
+
+// Optional requests beyond the star rating. ModelCapabilities says which of them work.
+message ChartControls {
+  // Amount of hold notes. LONG_NOTE_AMOUNT_UNSPECIFIED leaves it to the model.
+  LongNoteAmount long_notes = 1;
+
+  // Time spans with their own request. Spans must not overlap.
+  repeated SectionRequest sections = 2;
+}
+
+enum LongNoteAmount {
+  // The model decides.
+  LONG_NOTE_AMOUNT_UNSPECIFIED = 0;
+  LONG_NOTE_AMOUNT_TAP_ONLY = 1;
+  LONG_NOTE_AMOUNT_HALF = 2;
+  LONG_NOTE_AMOUNT_NATURAL = 3;
+}
+
+// A request for one span of the song.
+message SectionRequest {
+  // Span in audio milliseconds, start_ms < end_ms. Models bound the span length (R2: 8 to 32 seconds).
+  uint32 start_ms = 1;
+  uint32 end_ms = 2;
+
+  oneof target {
+    // Star rating for this span alone.
+    double star = 3;
+
+    // Note pattern for this span.
+    PatternRequest pattern = 4;
+  }
+}
+
+message PatternRequest {
+  PatternKind kind = 1;
+
+  // How strongly the pattern is asked for, from 0 to 1 inclusive.
+  double strength = 2;
+}
+
+enum PatternKind {
+  PATTERN_KIND_UNSPECIFIED = 0;
+  PATTERN_KIND_STREAM = 1;
+  PATTERN_KIND_JUMPSTREAM = 2;
+  PATTERN_KIND_CHORDSTREAM = 3;
+  PATTERN_KIND_JACK = 4;
+  PATTERN_KIND_CHORDJACK = 5;
+}
+
+// Sent by a client to ask a chart service what it can do. Envelope.session_id SHOULD be empty.
+message CapabilitiesRequest {}
+
+// What a chart service runs and which requests it can honour.
+message ModelCapabilities {
+  // Human-readable model name, such as "Ensomi R2".
+  string model_name = 1;
+
+  // Release identifier, such as "r2-1.0".
+  string model_version = 2;
+
+  // Files that make up the loaded model, with checksums, so a client can tell which weights produced a chart.
+  repeated ModelFile files = 3;
+
+  // Accepted star range: min_star <= star < max_star_exclusive.
+  double min_star = 4;
+  double max_star_exclusive = 5;
+
+  repeated ControlCapability controls = 6;
+}
+
+message ModelFile {
+  // Path relative to the model directory.
+  string path = 1;
+
+  string sha256_hex = 2;
+}
+
+// Whether one control works. Names are stable lower-case identifiers: "star", "stream", "jumpstream",
+// "chordstream", "jack", "chordjack", "section_star", "long_notes".
+message ControlCapability {
+  string name = 1;
+  ControlStatus status = 2;
+
+  // Evidence or caveat in a sentence, for display.
+  string note = 3;
+}
+
+enum ControlStatus {
+  CONTROL_STATUS_UNSPECIFIED = 0;
+
+  // Checked against human judgement.
+  CONTROL_STATUS_WORKS = 1;
+
+  // Accepted and measured, but not checked against human judgement.
+  CONTROL_STATUS_EXPERIMENTAL = 2;
+
+  // Accepted but known not to do what it says. Clients should not offer it.
+  CONTROL_STATUS_NOT_WORKING = 3;
+}
+
+// Sent by a chart service when it enters a phase of a generation. Phases are in order and a service may skip some.
+message GenerationProgress {
+  GenerationPhase phase = 1;
+}
+
+enum GenerationPhase {
+  GENERATION_PHASE_UNSPECIFIED = 0;
+  GENERATION_PHASE_LOADING = 1;
+  GENERATION_PHASE_TIMING = 2;
+  GENERATION_PHASE_ROWS = 3;
+  GENERATION_PHASE_ARRANGEMENT = 4;
+  GENERATION_PHASE_EXPORT = 5;
+}
+
+// The finished chart of one GenerateChartRequest.
+message ChartResult {
+  Chart chart = 1;
+  GenerationReceipt receipt = 2;
+}
+
+// What was run, so a chart can be traced to its model, seed and settings.
+message GenerationReceipt {
+  string model_name = 1;
+  string model_version = 2;
+
+  // Seed actually used.
+  uint64 seed = 3;
+
+  // Star actually used.
+  double star = 4;
+
+  // Complete service-defined receipt as JSON, including the realised settings. For logs and display.
+  string receipt_json = 5;
+
+  // Playable .osz of the same chart, when the service wrote one. A path on the service's machine.
+  optional string osz_path = 6;
+}

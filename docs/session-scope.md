@@ -14,6 +14,11 @@ session id carried by the envelope.
 | `ReferenceTimeRequest` | MUST be non-empty                                                                         |
 | `HitObjectTokenEvent`  | MUST be non-empty                                                                         |
 | `StopSessionRequest`   | MUST be non-empty                                                                         |
+| `GenerateChartRequest` | MUST be non-empty                                                                         |
+| `GenerationProgress`   | MUST be non-empty, the request's session                                                  |
+| `ChartResult`          | MUST be non-empty, the request's session                                                  |
+| `CapabilitiesRequest`  | SHOULD be empty                                                                           |
+| `ModelCapabilities`    | SHOULD be empty                                                                           |
 | `StatusEvent`          | MAY be empty for endpoint/node-scoped status; MUST be non-empty for session-scoped status |
 
 `StopSessionRequest` intentionally has no `session_id` field. It targets the

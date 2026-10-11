@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package ensomi.protocol.v1;
 
+import "ensomi/protocol/v1/chart.proto";
 import "ensomi/protocol/v1/core.proto";
 import "ensomi/protocol/v1/inference.proto";
 import "ensomi/protocol/v1/mapper.proto";
@@ -45,5 +46,12 @@ message Envelope {
     ErrorEvent error = 21;
     StatusEvent status = 22;
     EndOfStreamEvent end_of_stream = 23;
+
+    // Complete-chart generation, see chart.proto.
+    GenerateChartRequest generate_chart = 24;
+    CapabilitiesRequest capabilities_request = 25;
+    ModelCapabilities model_capabilities = 26;
+    GenerationProgress generation_progress = 27;
+    ChartResult chart_result = 28;
   }
 }
