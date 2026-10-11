@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package ensomi.protocol.v1;
+
+import "ensomi/protocol/v1/chart.proto";
+
+// Model package: the files a client needs to run a model on its own device, and the manifest it downloads
+// first to learn what to fetch and whether it can run it. docs/model-package.md gives the file layout and
+// the order of verification.
+
+// One ONNX graph of the package.
+message ModelGraph {
+  // Name the runtime calls the graph by, such as "beatthis" or "rows_step". Unique within the package.
+  string name = 1;
+
+  // Path of the ONNX file. It is also listed in ModelPackageManifest.files.
+  string file = 2;
+
+  // Version of the default ONNX operator set the graph was exported with. A client whose ONNX Runtime
+  // supports an older opset cannot load it.
+  uint32 opset = 3;
+}
+
+// Runtime versions that can run a package.
+message RuntimeVersionRange {
+  // Semantic version of the oldest Ensomi runtime that can run the package, such as "0.1.0".
+  string min_version = 1;
+
+  // The first version that can no longer run it. Absent means no known upper bound.
+  optional string max_version_exclusive = 2;
+}
+
+// The first file a client downloads for a model. It is a document, not an Envelope payload, and does not
+// list itself in files.
+message ModelPackageManifest {
+  // Human-readable model name. Equals ModelCapabilities.model_name of a service running the same model.
+  string model_name = 1;
+
+  // Release identifier. Equals ModelCapabilities.model_version of a service running the same model.
+  string model_version = 2;
+
+  // SPDX license expression for the package as a whole, such as "CC-BY-NC-SA-4.0". A client shows or
+  // checks it before downloading the weights.
+  string license = 3;
+
+  // Every file the client needs: the graphs, the runtime config and the arrays they read. Paths are
+  // relative to the directory that holds the manifest. Each file's size_bytes and sha256_hex are set.
+  repeated ModelFile files = 4;
+
+  repeated ModelGraph graphs = 5;
+
+  // Path of the file, among files, that configures the runtime for these graphs: tensor names and
+  // shapes, feature constants and decoding settings. Its schema is versioned by the runtime.
+  string runtime_config_path = 6;
+
+  // Runtimes that can run the package. A client outside the range does not load it.
+  RuntimeVersionRange runtime_versions = 7;
+}

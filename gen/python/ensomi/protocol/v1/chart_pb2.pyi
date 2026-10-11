@@ -142,12 +142,14 @@ class ModelCapabilities(_message.Message):
     def __init__(self, model_name: _Optional[str] = ..., model_version: _Optional[str] = ..., files: _Optional[_Iterable[_Union[ModelFile, _Mapping]]] = ..., min_star: _Optional[float] = ..., max_star_exclusive: _Optional[float] = ..., controls: _Optional[_Iterable[_Union[ControlCapability, _Mapping]]] = ...) -> None: ...
 
 class ModelFile(_message.Message):
-    __slots__ = ("path", "sha256_hex")
+    __slots__ = ("path", "sha256_hex", "size_bytes")
     PATH_FIELD_NUMBER: _ClassVar[int]
     SHA256_HEX_FIELD_NUMBER: _ClassVar[int]
+    SIZE_BYTES_FIELD_NUMBER: _ClassVar[int]
     path: str
     sha256_hex: str
-    def __init__(self, path: _Optional[str] = ..., sha256_hex: _Optional[str] = ...) -> None: ...
+    size_bytes: int
+    def __init__(self, path: _Optional[str] = ..., sha256_hex: _Optional[str] = ..., size_bytes: _Optional[int] = ...) -> None: ...
 
 class ControlCapability(_message.Message):
     __slots__ = ("name", "status", "note")

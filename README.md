@@ -37,6 +37,15 @@ proto/ensomi/protocol/v1/mapper.proto
 
 proto/ensomi/protocol/v1/chart.proto
   Complete-chart generation: request, controls, capabilities, progress, and the chart as plain objects.
+
+proto/ensomi/protocol/v1/chart_stream.proto
+  Chart stream: a chart delivered in pages while it is generated, with pagination and coverage.
+
+proto/ensomi/protocol/v1/gameplay.proto
+  Gameplay: judgement ruleset and tiers, input events, replay, and play result.
+
+proto/ensomi/protocol/v1/model_package.proto
+  Model package manifest: files with size and checksum, ONNX graphs, runtime config, compatible runtimes.
 ```
 
 ## Current Scope
@@ -47,8 +56,11 @@ This package owns the stable cross-language contract between Ensomi clients, the
 - Inference WebSocket envelopes: ready, audio, reference time, stop, status, error, hitobject token, and end-of-stream.
 - Opaque mapper token stream events tagged with a token-contract version.
 - Complete-chart generation (since 0.2.0): one request produces a whole chart as `{lane, start_ms, end_ms?}` objects, with a capabilities reply, per-phase progress and a receipt.
+- Gameplay data (since 0.3.0): the judgement ruleset, input events, replays and play results, so every client and the shared runtime judge a play the same way. See [Gameplay](./docs/gameplay.md).
+- Model packages (since 0.3.0): a manifest of the files, ONNX graphs, runtime config and compatible runtime versions of a model a client downloads. See [Model package](./docs/model-package.md).
+- Chart stream (since 0.3.0): a chart delivered in pages with a coverage watermark while it is generated, replacing the JSON `ensomi-demo/v1` contract.
 
-This package does not own token decoding, decoded Mania4K/domain state, model inference internals, Torch checkpoints, timing fitting algorithms, SwiftUI state, rendering, judgement, input routing, audio clock implementations, or full `.osu` parsing/export.
+This package does not own token decoding, decoded Mania4K/domain state, model inference internals, Torch checkpoints, timing fitting algorithms, SwiftUI state, rendering, the judgement and scoring implementations, input routing, audio clock implementations, or full `.osu` parsing/export.
 
 ## Distribution Surfaces
 
@@ -98,7 +110,7 @@ python3 -m pip install dist/*.whl
 python3 -c "from ensomi.protocol.v1 import envelope_pb2; envelope_pb2.Envelope()"
 ```
 
-Generated Python classes live in the module for their source `.proto` file. For example, import `Envelope` from `envelope_pb2`, inference messages from `inference_pb2`, mapper token messages from `mapper_pb2`, and node graph messages from `core_pb2`.
+Generated Python classes live in the module for their source `.proto` file. For example, import `Envelope` from `envelope_pb2`, inference messages from `inference_pb2`, mapper token messages from `mapper_pb2`, node graph messages from `core_pb2`, gameplay messages from `gameplay_pb2`, and the model package manifest from `model_package_pb2`.
 
 The `Publish Python package` GitHub workflow is manual and expects PyPI trusted publishing to be configured for the repository/environment before it is run.
 

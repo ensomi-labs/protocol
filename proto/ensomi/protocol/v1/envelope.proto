@@ -3,6 +3,7 @@ syntax = "proto3";
 package ensomi.protocol.v1;
 
 import "ensomi/protocol/v1/chart.proto";
+import "ensomi/protocol/v1/chart_stream.proto";
 import "ensomi/protocol/v1/core.proto";
 import "ensomi/protocol/v1/inference.proto";
 import "ensomi/protocol/v1/mapper.proto";
@@ -53,5 +54,11 @@ message Envelope {
     ModelCapabilities model_capabilities = 26;
     GenerationProgress generation_progress = 27;
     ChartResult chart_result = 28;
+
+    // Chart delivered in pages while it is generated, see chart_stream.proto.
+    ChartStreamRequest chart_stream_request = 29;
+    ChartStreamOpened chart_stream_opened = 30;
+    ChartPageRequest chart_page_request = 31;
+    ChartPage chart_page = 32;
   }
 }

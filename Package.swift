@@ -25,10 +25,13 @@ let package = Package(
             path: "gen/swift",
             sources: [
                 "ensomi/protocol/v1/chart.pb.swift",
+                "ensomi/protocol/v1/chart_stream.pb.swift",
                 "ensomi/protocol/v1/core.pb.swift",
                 "ensomi/protocol/v1/envelope.pb.swift",
+                "ensomi/protocol/v1/gameplay.pb.swift",
                 "ensomi/protocol/v1/inference.pb.swift",
                 "ensomi/protocol/v1/mapper.pb.swift",
+                "ensomi/protocol/v1/model_package.pb.swift",
             ]
         )
     ]
