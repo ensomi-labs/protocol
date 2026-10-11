@@ -11,6 +11,7 @@ import "ensomi/protocol/v1/inference.proto";
 //   service: GenerationProgress (zero or more, one per phase entered), then ChartResult
 //   or the service answers with ErrorEvent, after which the session is over.
 // The client cancels with StopSessionRequest; the service then sends no ChartResult for that session.
+// A service generates one chart at a time; a request that arrives meanwhile waits its turn.
 // CapabilitiesRequest is node-scoped (empty session_id) and answered with ModelCapabilities.
 // The service sets Envelope.correlation_id of every reply to the request's Envelope.message_id.
 //
@@ -18,7 +19,6 @@ import "ensomi/protocol/v1/inference.proto";
 //   "star_out_of_range" (PROTOCOL_ERROR): star is outside [min_star, max_star_exclusive).
 //   "audio_unreadable" (AUDIO_NOT_FOUND): the audio reference cannot be read by the service.
 //   "unsupported_control" (PROTOCOL_ERROR): a control is malformed or the model rejects it.
-//   "busy" (PROTOCOL_ERROR): another generation is running.
 //   "generation_failed" (INFERENCE_FAILED): internal failure.
 
 // One note. Times are audio time in whole milliseconds with no latency or offset applied.
