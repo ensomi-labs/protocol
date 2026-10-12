@@ -25,9 +25,6 @@ session id carried by the envelope.
 | `ModelCapabilities`    | SHOULD be empty                                                                           |
 | `StatusEvent`          | MAY be empty for endpoint/node-scoped status; MUST be non-empty for session-scoped status |
 
-`Replay`, `PlayResult` and `ModelPackageManifest` are documents, not `Envelope` payloads, and have no
-session scope.
-
 `StopSessionRequest` intentionally has no `session_id` field. It targets the
 active session identified by `Envelope.session_id`; therefore an envelope with
 `payload.stop_session` and an empty `Envelope.session_id` is invalid.

@@ -452,21 +452,9 @@ public nonisolated struct Ensomi_Protocol_V1_ModelFile: Sendable {
 
   public var sha256Hex: String = String()
 
-  /// Size of the file in bytes. Always set in a ModelPackageManifest; a service may omit it here.
-  public var sizeBytes: UInt64 {
-    get {_sizeBytes ?? 0}
-    set {_sizeBytes = newValue}
-  }
-  /// Returns true if `sizeBytes` has been explicitly set.
-  public var hasSizeBytes: Bool {self._sizeBytes != nil}
-  /// Clears the value of `sizeBytes`. Subsequent reads from it will return its default value.
-  public mutating func clearSizeBytes() {self._sizeBytes = nil}
-
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
-
-  fileprivate var _sizeBytes: UInt64? = nil
 }
 
 /// Whether one control works. Names are stable lower-case identifiers: "star", "stream", "jumpstream",
@@ -945,7 +933,7 @@ nonisolated extension Ensomi_Protocol_V1_ModelCapabilities: SwiftProtobuf.Messag
 
 nonisolated extension Ensomi_Protocol_V1_ModelFile: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ModelFile"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}path\0\u{3}sha256_hex\0\u{3}size_bytes\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}path\0\u{3}sha256_hex\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -955,33 +943,24 @@ nonisolated extension Ensomi_Protocol_V1_ModelFile: SwiftProtobuf.Message, Swift
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.path) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.sha256Hex) }()
-      case 3: try { try decoder.decodeSingularUInt64Field(value: &self._sizeBytes) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.path.isEmpty {
       try visitor.visitSingularStringField(value: self.path, fieldNumber: 1)
     }
     if !self.sha256Hex.isEmpty {
       try visitor.visitSingularStringField(value: self.sha256Hex, fieldNumber: 2)
     }
-    try { if let v = self._sizeBytes {
-      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 3)
-    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: Ensomi_Protocol_V1_ModelFile, rhs: Ensomi_Protocol_V1_ModelFile) -> Bool {
     if lhs.path != rhs.path {return false}
     if lhs.sha256Hex != rhs.sha256Hex {return false}
-    if lhs._sizeBytes != rhs._sizeBytes {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

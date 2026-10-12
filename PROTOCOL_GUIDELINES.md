@@ -32,8 +32,7 @@ This package should contain stable, cross-process protocol contracts:
 
 - Node graph identity, roles, and capability announcements for host, player client, model service, hardware, and debug-tool processes.
 - Inference endpoint messages and lifecycle states.
-- Gameplay data: the judgement ruleset and tiers, input events, replays, and play results.
-- Model package manifests, and chart streams delivered in pages.
+- Chart streams delivered in pages.
 - Machine-readable enums and error codes shared by Swift, Python, and npm consumers.
 - Opaque token-stream events tagged with the token-contract version needed by Swift/model-side decoders.
 - Generated artifacts that prove those contracts are stable.
@@ -42,7 +41,7 @@ Keep implementation details in their owning repositories:
 
 - Model training, Torch runtime, checkpoint loading, mel/control features, grammar decoding, and timing fitting algorithms stay in `Ensomi-model`.
 - Token decoding, decoded Mania4K/domain state, SwiftUI view state, AVFoundation clocks, input routing, rendering, and local-library/recognition integrations stay in `Ensomi`.
-- The judgement and scoring implementations stay in the shared runtime (`ensomi-runtime`) and in clients that have not moved to it. This package fixes their data and `docs/gameplay.md` the order of evaluation, not their code.
+- Gameplay rules, judgement, and scoring stay in the shared runtime (`ensomi-runtime`) and are not part of this package.
 - Full `.osu` import/export behavior stays outside this protocol.
 
 ## Inference Lifecycle
