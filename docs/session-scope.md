@@ -17,6 +17,10 @@ session id carried by the envelope.
 | `GenerateChartRequest` | MUST be non-empty                                                                         |
 | `GenerationProgress`   | MUST be non-empty, the request's session                                                  |
 | `ChartResult`          | MUST be non-empty, the request's session                                                  |
+| `ChartStreamRequest`   | MUST be non-empty                                                                         |
+| `ChartStreamOpened`    | MUST be non-empty, the request's session                                                  |
+| `ChartPageRequest`     | MUST be non-empty, the stream's session                                                   |
+| `ChartPage`            | MUST be non-empty, the stream's session                                                   |
 | `CapabilitiesRequest`  | SHOULD be empty                                                                           |
 | `ModelCapabilities`    | SHOULD be empty                                                                           |
 | `StatusEvent`          | MAY be empty for endpoint/node-scoped status; MUST be non-empty for session-scoped status |

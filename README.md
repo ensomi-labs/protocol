@@ -37,6 +37,9 @@ proto/ensomi/protocol/v1/mapper.proto
 
 proto/ensomi/protocol/v1/chart.proto
   Complete-chart generation: request, controls, capabilities, progress, and the chart as plain objects.
+
+proto/ensomi/protocol/v1/chart_stream.proto
+  Chart stream: a chart delivered in pages while it is generated, with pagination and coverage.
 ```
 
 ## Current Scope
@@ -47,6 +50,7 @@ This package owns the stable cross-language contract between Ensomi clients, the
 - Inference WebSocket envelopes: ready, audio, reference time, stop, status, error, hitobject token, and end-of-stream.
 - Opaque mapper token stream events tagged with a token-contract version.
 - Complete-chart generation (since 0.2.0): one request produces a whole chart as `{lane, start_ms, end_ms?}` objects, with a capabilities reply, per-phase progress and a receipt.
+- Chart stream (since 0.3.0): a chart delivered in pages with a coverage watermark while it is generated, replacing the JSON `ensomi-demo/v1` contract.
 
 This package does not own token decoding, decoded Mania4K/domain state, model inference internals, Torch checkpoints, timing fitting algorithms, SwiftUI state, rendering, judgement, input routing, audio clock implementations, or full `.osu` parsing/export.
 

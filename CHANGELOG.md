@@ -1,5 +1,12 @@
 # @ensomi/protocol
 
+## 0.3.0 (unreleased)
+
+### Minor Changes
+
+- Add the chart stream in `chart_stream.proto`: `ChartStreamRequest`, `ChartStreamOpened`, `ChartPageRequest` (`after_sequence`, `through_ms`) and `ChartPage` (`sequence`, `coverage_ms`, `end_of_stream`, `ChartObject`s, receipt). The four messages join `Envelope.payload` at field numbers 29 to 32. It replaces the JSON `ensomi-demo/v1` contract.
+- Additive: no existing message, field number or enum value changed.
+
 ## 0.2.0
 
 ### Minor Changes

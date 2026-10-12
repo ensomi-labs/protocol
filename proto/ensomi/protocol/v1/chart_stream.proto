@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package ensomi.protocol.v1;
+
+import "ensomi/protocol/v1/chart.proto";
+
+// Chart stream: a chart delivered in pages while it is still being generated, so a player can start before
+// the whole song is done. Same pages as the JSON "ensomi-demo/v1" contract (session, window, cancel), as
+// binary Envelope frames; that contract retires with this one.
+//
+// Session flow, all with the same non-empty Envelope.session_id:
+//   client: ChartStreamRequest
+//   service: GenerationProgress (zero or more, one per phase entered), then ChartStreamOpened
+//   client: ChartPageRequest; service: ChartPage; repeated until a page has end_of_stream
+//   or the service answers with ErrorEvent, after which the session is over.
+// The client cancels with StopSessionRequest. The service sets Envelope.correlation_id of every reply to the
+// request's Envelope.message_id. A service generates one chart at a time, as for GenerateChartRequest.
+//
+// Pages are append-only. Each holds the objects that start between the previous page's coverage and its own,
+// so the objects of all pages in sequence order are exactly the Chart.objects of the finished chart.
+// coverage_ms has the meaning of EndOfStreamEvent.complete_through_ms: the stream is complete through that
+// audio time.
+//
+// ErrorEvent.code values used by a chart stream, with ErrorEvent.error_code in parentheses. Those listed in
+// chart.proto apply to ChartStreamRequest too.
+//   "stream_unsupported" (PROTOCOL_ERROR): the service delivers complete charts only.
+//   "page_out_of_order" (PROTOCOL_ERROR): after_sequence is not the sequence of the last page sent.
+
+// Sent by a client to generate a chart delivered as a stream. Envelope.session_id MUST be non-empty.
+message ChartStreamRequest {
+  // The song, star rating, seed and controls, with the meaning they have for a complete chart.
+  GenerateChartRequest generation = 1;
+}
+
+// Sent by the service once the request is accepted and the song length is known.
+message ChartStreamOpened {
+  // Song length in milliseconds. Equals Chart.duration_ms of the finished chart and
+  // EndOfStreamEvent.audio_length_ms. The last page has coverage_ms equal to it.
+  uint32 duration_ms = 1;
+}
+
+// Sent by a client to ask for the next page. Envelope.session_id MUST be non-empty.
+message ChartPageRequest {
+  // Sequence of the last page the client has applied; 0 before the first. The next page has the sequence
+  // after_sequence + 1, and the service may discard pages up to after_sequence.
+  uint64 after_sequence = 1;
+
+  // Audio time in milliseconds the client wants covered. The service answers once it has settled this much
+  // or the song has ended, so the page may cover more than asked, never less except at the end.
+  uint32 through_ms = 2;
+}
+
+// One page of a chart stream, the answer to a ChartPageRequest.
+message ChartPage {
+  // Number of this page, counted from 1.
+  uint64 sequence = 1;
+
+  // The stream is complete through this audio time: no later page holds an object that starts at or before
+  // it. It is greater than the previous page's, except that the last page may repeat it, and at most
+  // ChartStreamOpened.duration_ms. A service that learns a hold's end only after its start keeps this below
+  // that start until it can send the whole object.
+  uint32 coverage_ms = 2;
+
+  // True on the last page. Its coverage_ms equals ChartStreamOpened.duration_ms, and every object of the
+  // chart has been sent.
+  bool end_of_stream = 3;
+
+  // Objects whose start_ms lies in (previous page's coverage_ms, coverage_ms]; for the first page,
+  // [0, coverage_ms]. A page never splits objects that start at the same time. Ordered as in Chart.objects.
+  // A hold's end_ms may lie after coverage_ms; it is final.
+  repeated ChartObject objects = 4;
+
+  // What was run, so the chart can be traced to its model, seed and settings. Set on the last page only.
+  optional GenerationReceipt receipt = 5;
+}
