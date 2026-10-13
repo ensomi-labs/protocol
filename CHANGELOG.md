@@ -10,6 +10,7 @@
 ### Patch Changes
 
 - The Python package requires `protobuf>=5.26.1,<9` instead of `<6`. Its gencode (Buf plugins `protocolbuffers/python` and `pyi` v26.1) is supported on protobuf runtimes 5.26.1 through 8.x by protobuf's [cross-version runtime guarantee](https://protobuf.dev/support/cross-version-runtime-guarantee/), so it installs beside packages that need protobuf 6 or 7, such as onnx 1.23.
+- `chart.proto` documents the `ErrorEvent.code` `protocol_error` (PROTOCOL_ERROR): a frame the chart service cannot parse or handle, or one that breaks the session flow, such as a request without a session id or a second request in a generating session. The model service already sent it. Comments only; generated code is unchanged.
 
 ## 0.2.0
 

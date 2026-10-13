@@ -16,6 +16,7 @@ import "ensomi/protocol/v1/inference.proto";
 // The service sets Envelope.correlation_id of every reply to the request's Envelope.message_id.
 //
 // ErrorEvent.code values used by a chart service, with ErrorEvent.error_code in parentheses:
+//   "protocol_error" (PROTOCOL_ERROR): a frame cannot be parsed or handled, or breaks the session flow above.
 //   "star_out_of_range" (PROTOCOL_ERROR): star is outside [min_star, max_star_exclusive).
 //   "audio_unreadable" (AUDIO_NOT_FOUND): the audio reference cannot be read by the service.
 //   "unsupported_control" (PROTOCOL_ERROR): a control is malformed or the model rejects it.
