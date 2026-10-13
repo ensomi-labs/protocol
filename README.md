@@ -87,11 +87,19 @@ SwiftPM publication is Git-tag based. Create and push a semver tag such as `0.1.
 
 ### Python
 
-Python consumers should eventually use the PyPI package:
+PyPI has 0.1.0:
 
 ```sh
-pip install ensomi-protocol==0.2.0
+pip install ensomi-protocol==0.1.0
 ```
+
+0.2.0 was not published to PyPI; install it from its Git tag:
+
+```sh
+pip install "ensomi-protocol @ git+https://github.com/ensomi-labs/protocol.git@v0.2.0"
+```
+
+Both require `protobuf>=5.26.1,<6`. The wider range in `pyproject.toml` is unreleased (see `CHANGELOG.md`).
 
 The local bootstrap build is:
 
